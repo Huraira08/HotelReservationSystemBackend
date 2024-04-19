@@ -18,6 +18,11 @@ namespace HotelReservationSystemBackend.Data.EntityConfiguration
             builder.Property(x => x.Name).HasMaxLength(100).IsRequired();
             builder.Property(x => x.NoOfRooms).IsRequired();
             builder.Property(x => x.RentPerDay).IsRequired();
+
+            builder.HasData(
+                new Hotel { Id = Guid.NewGuid(), Name = "Royal hotel", NoOfRooms = 50, ImagePaths = [] },
+                new Hotel { Id = Guid.NewGuid(), Name = "Five star hotel", NoOfRooms = 70, ImagePaths = [] }
+                );
         }
     }
 }

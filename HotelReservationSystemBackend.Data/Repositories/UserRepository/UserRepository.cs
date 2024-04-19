@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HotelReservationSystemBackend.Data.UserRepository
+namespace HotelReservationSystemBackend.Data.Repositories.UserRepository
 {
     public class UserRepository : IUserRepository
     {
@@ -28,7 +28,7 @@ namespace HotelReservationSystemBackend.Data.UserRepository
         }
         public async Task<int> AddOrUpdateAsync(User newUser)
         {
-            if(newUser.Id == Guid.Empty)
+            if (newUser.Id == Guid.Empty)
             {
                 _context.Users.Add(newUser);
             }
@@ -47,15 +47,15 @@ namespace HotelReservationSystemBackend.Data.UserRepository
                 oldUser.Role = newUser.Role;
                 _context.Entry(oldUser).State = EntityState.Modified;
             }
-            return _context.SaveChanges();
+            return await _context.SaveChangesAsync();
         }
         public async Task<int> Delete(Guid id)
         {
             User? user = await GetAsync(id);
-            if(user == null) return 0;
+            if (user == null) return 0;
 
             _context.Users.Remove(user);
-            return _context.SaveChanges();
+            return await _context.SaveChangesAsync();
         }
     }
 }
