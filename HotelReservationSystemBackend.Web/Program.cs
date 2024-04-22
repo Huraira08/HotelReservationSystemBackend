@@ -1,4 +1,9 @@
+using HotelReservationSystemBackend.Business.BookingRequestManager;
+using HotelReservationSystemBackend.Business.HotelManager;
+using HotelReservationSystemBackend.Business.UserManager;
 using HotelReservationSystemBackend.Data.Context;
+using HotelReservationSystemBackend.Data.Repositories.AllocationRepository;
+using HotelReservationSystemBackend.Data.Repositories.BookingRepository;
 using HotelReservationSystemBackend.Data.Repositories.HotelRepository;
 using HotelReservationSystemBackend.Data.Repositories.UserRepository;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +21,18 @@ builder.Services.AddDbContext<HotelReservationContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 
+builder.Services.AddCors();
+
+// repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+builder.Services.AddScoped<IAllocationRepository, AllocationRepository>();
+builder.Services.AddScoped<IBookingRequestRepository, BookingRequestRepository>();
+
+// managers
+builder.Services.AddScoped<IHotelManager, HotelManager>();
+builder.Services.AddScoped<IUserManager, UserManager>();
+builder.Services.AddScoped<IBookingRequestManager, BookingRequestManager>();
 
 var app = builder.Build();
 
@@ -31,6 +46,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseCors(options =>
+options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
+    );
 
 app.MapControllers();
 

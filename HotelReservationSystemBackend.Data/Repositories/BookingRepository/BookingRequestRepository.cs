@@ -43,7 +43,7 @@ namespace HotelReservationSystemBackend.Data.Repositories.BookingRepository
 
             return await _context.SaveChangesAsync();
         }
-        public async Task<int> Delete(Guid id)
+        public async Task<int> DeleteAsync(Guid id)
         {
             BookingRequest? bookingRequest = await GetAsync(id);
             if (bookingRequest == null) return 0;

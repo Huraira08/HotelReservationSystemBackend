@@ -81,8 +81,8 @@ namespace HotelReservationSystemBackend.Data.Migrations
                 columns: new[] { "Id", "ImagePaths", "Name", "NoOfRooms", "RentPerDay" },
                 values: new object[,]
                 {
-                    { new Guid("9b26b392-350a-4f58-84a7-e4100e15ceea"), "[]", "Royal hotel", 50, 0 },
-                    { new Guid("a62906f1-b711-4b62-828d-6ed2fdb23724"), "[]", "Five star hotel", 70, 0 }
+                    { new Guid("10af5a4e-bbcf-4cbc-9c43-4af3a6ab0643"), "[]", "Royal hotel", 50, 5000 },
+                    { new Guid("18fd99db-15fd-45f4-8b38-73cff59d745f"), "[]", "Five star hotel", 70, 4000 }
                 });
         }
 

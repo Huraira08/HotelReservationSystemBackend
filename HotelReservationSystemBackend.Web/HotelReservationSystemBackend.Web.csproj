@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HotelReservationSystemBackend.Business\HotelReservationSystemBackend.Business.csproj" />
     <ProjectReference Include="..\HotelReservationSystemBackend.Data\HotelReservationSystemBackend.Data.csproj" />
   </ItemGroup>
 

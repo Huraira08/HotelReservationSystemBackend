@@ -5,14 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HotelReservationSystemBackend.Data.Repositories.UserRepository
+namespace HotelReservationSystemBackend.Business.UserManager
 {
-    public interface IUserRepository
+    public interface IUserManager
     {
         public Task<User?> GetAsync(Guid id);
         public Task<List<User>> GetAsync();
         public Task<User?> AddOrUpdateAsync(User newUser);
-        public Task<int> Delete(Guid id);
-        public Task<User?> GetByEmailAsync(string email);
+        public Task<int> DeleteAsync(Guid id);
     }
 }

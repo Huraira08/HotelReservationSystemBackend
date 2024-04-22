@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HotelReservationSystemBackend.Data.EntityConfiguration
 {
-    public class AllocationEntityConfiguration : IEntityTypeConfiguration<Allocation>
+    internal class AllocationEntityConfiguration : IEntityTypeConfiguration<Allocation>
     {
         public void Configure(EntityTypeBuilder<Allocation> builder)
         {

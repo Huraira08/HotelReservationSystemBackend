@@ -4,6 +4,7 @@ using HotelReservationSystemBackend.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelReservationSystemBackend.Data.Migrations
 {
     [DbContext(typeof(HotelReservationContext))]
-    partial class HotelReservationContextModelSnapshot : ModelSnapshot
+    [Migration("20240421115152_AddTablesToDb")]
+    partial class AddTablesToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,7 +99,7 @@ namespace HotelReservationSystemBackend.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f5a7f82d-c755-4106-94f8-9cbb0befe123"),
+                            Id = new Guid("10af5a4e-bbcf-4cbc-9c43-4af3a6ab0643"),
                             ImagePaths = "[]",
                             Name = "Royal hotel",
                             NoOfRooms = 50,
@@ -104,7 +107,7 @@ namespace HotelReservationSystemBackend.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b50410bc-b5a7-4cf4-a8ea-0e94d96edad4"),
+                            Id = new Guid("18fd99db-15fd-45f4-8b38-73cff59d745f"),
                             ImagePaths = "[]",
                             Name = "Five star hotel",
                             NoOfRooms = 70,
@@ -150,19 +153,6 @@ namespace HotelReservationSystemBackend.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("e2067bca-292c-4eab-a9de-a4fdeb1f9bc0"),
-                            Age = 26,
-                            Cnic = "33293-5749302-1",
-                            Email = "aslamazhar@gmail.com",
-                            Gender = 0,
-                            Name = "Aslam Azhar",
-                            Password = "aslam1234",
-                            Role = 0
-                        });
                 });
 #pragma warning restore 612, 618
         }

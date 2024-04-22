@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HotelReservationSystemBackend.Data.EntityConfiguration
 {
-    public class UserEntityConfiguration : IEntityTypeConfiguration<User>
+    internal class UserEntityConfiguration : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
@@ -23,6 +23,19 @@ namespace HotelReservationSystemBackend.Data.EntityConfiguration
             builder.Property(u => u.Cnic).HasMaxLength(15).IsRequired();
             builder.Property(u => u.Role).IsRequired();
             builder.Ignore(u => u.BookingRequests);
+
+            builder.HasData(
+                new User { 
+                    Id = Guid.NewGuid(), 
+                    Name = "Aslam Azhar",
+                    Email = "aslamazhar@gmail.com",
+                    Password = "aslam1234",
+                    Age=26,
+                    Gender = Gender.Male,
+                    Cnic = "33293-5749302-1",
+                    Role = Role.Customer
+                }
+                );
         }
     }
 }

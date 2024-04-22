@@ -19,11 +19,13 @@ namespace HotelReservationSystemBackend.Data.Repositories.HotelRepository
 
         public async Task<List<Hotel>> GetAsync()
         {
-            return await _context.Hotels.ToListAsync();
+            List<Hotel> hotels = await _context.Hotels.ToListAsync();
+            return hotels;
         }
         public async Task<Hotel?> GetAsync(Guid id)
         {
-            return await _context.Hotels.FindAsync(id);
+            Hotel? hotel = await _context.Hotels.FindAsync(id);
+            return hotel;
         }
         public async Task<int> AddOrUpdateAsync(Hotel newHotel)
         {
@@ -43,7 +45,8 @@ namespace HotelReservationSystemBackend.Data.Repositories.HotelRepository
 
                 _context.Entry(newHotel).State = EntityState.Modified;
             }
-            return await _context.SaveChangesAsync();
+            int rowAffected = await _context.SaveChangesAsync();
+            return rowAffected;
         }
 
         public async Task<int> Delete(Guid id)
@@ -52,7 +55,8 @@ namespace HotelReservationSystemBackend.Data.Repositories.HotelRepository
             if (hotel == null) return 0;
 
             _context.Hotels.Remove(hotel);
-            return await _context.SaveChangesAsync();
+            int rowsAffected = await _context.SaveChangesAsync();
+            return rowsAffected;
         }
     }
 }

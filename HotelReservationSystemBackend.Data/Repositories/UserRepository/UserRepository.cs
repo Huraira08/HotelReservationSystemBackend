@@ -26,7 +26,7 @@ namespace HotelReservationSystemBackend.Data.Repositories.UserRepository
         {
             return await _context.Users.FindAsync(id);
         }
-        public async Task<int> AddOrUpdateAsync(User newUser)
+        public async Task<User?> AddOrUpdateAsync(User newUser)
         {
             if (newUser.Id == Guid.Empty)
             {
@@ -36,10 +36,10 @@ namespace HotelReservationSystemBackend.Data.Repositories.UserRepository
             {
                 User? oldUser = await GetAsync(newUser.Id);
 
-                if (oldUser == null) return 0;
+                if (oldUser == null) return null;
 
                 oldUser.Name = newUser.Name;
-                oldUser.Email = newUser.Email;
+                //oldUser.Email = newUser.Email;
                 oldUser.Password = newUser.Password;
                 oldUser.Age = newUser.Age;
                 oldUser.Gender = newUser.Gender;
@@ -47,7 +47,8 @@ namespace HotelReservationSystemBackend.Data.Repositories.UserRepository
                 oldUser.Role = newUser.Role;
                 _context.Entry(oldUser).State = EntityState.Modified;
             }
-            return await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            return newUser;
         }
         public async Task<int> Delete(Guid id)
         {
@@ -56,6 +57,12 @@ namespace HotelReservationSystemBackend.Data.Repositories.UserRepository
 
             _context.Users.Remove(user);
             return await _context.SaveChangesAsync();
+        }
+
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return user;
         }
     }
 }

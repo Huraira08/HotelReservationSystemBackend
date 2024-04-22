@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HotelReservationSystemBackend.Data.EntityConfiguration
 {
-    public class HotelEntityConfiguration : IEntityTypeConfiguration<Hotel>
+    internal class HotelEntityConfiguration : IEntityTypeConfiguration<Hotel>
     {
         public void Configure(EntityTypeBuilder<Hotel> builder)
         {
@@ -20,8 +20,8 @@ namespace HotelReservationSystemBackend.Data.EntityConfiguration
             builder.Property(x => x.RentPerDay).IsRequired();
 
             builder.HasData(
-                new Hotel { Id = Guid.NewGuid(), Name = "Royal hotel", NoOfRooms = 50, ImagePaths = [] },
-                new Hotel { Id = Guid.NewGuid(), Name = "Five star hotel", NoOfRooms = 70, ImagePaths = [] }
+                new Hotel { Id = Guid.NewGuid(), Name = "Royal hotel", NoOfRooms = 50, RentPerDay = 5000, ImagePaths = [] },
+                new Hotel { Id = Guid.NewGuid(), Name = "Five star hotel", NoOfRooms = 70, RentPerDay = 4000, ImagePaths = [] }
                 );
         }
     }

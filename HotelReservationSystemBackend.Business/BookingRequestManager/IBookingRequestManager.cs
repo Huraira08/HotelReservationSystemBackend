@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HotelReservationSystemBackend.Data.Repositories.BookingRepository
+namespace HotelReservationSystemBackend.Business.BookingRequestManager
 {
-    public interface IBookingRequestRepository
+    public interface IBookingRequestManager
     {
         public Task<BookingRequest?> GetAsync(Guid id);
         public Task<List<BookingRequest>> GetAsync();

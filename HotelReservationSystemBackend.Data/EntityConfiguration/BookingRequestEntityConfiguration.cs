@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HotelReservationSystemBackend.Data.EntityConfiguration
 {
-    public class BookingRequestEntityConfiguration : IEntityTypeConfiguration<BookingRequest>
+    internal class BookingRequestEntityConfiguration : IEntityTypeConfiguration<BookingRequest>
     {
         public void Configure(EntityTypeBuilder<BookingRequest> builder)
         {

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelReservationSystemBackend.Data.Migrations
 {
     [DbContext(typeof(HotelReservationContext))]
-    [Migration("20240419130001_AddTablesToDb")]
-    partial class AddTablesToDb
+    [Migration("20240421171550_AddUserSeeder")]
+    partial class AddUserSeeder
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,19 +99,19 @@ namespace HotelReservationSystemBackend.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9b26b392-350a-4f58-84a7-e4100e15ceea"),
+                            Id = new Guid("f5a7f82d-c755-4106-94f8-9cbb0befe123"),
                             ImagePaths = "[]",
                             Name = "Royal hotel",
                             NoOfRooms = 50,
-                            RentPerDay = 0
+                            RentPerDay = 5000
                         },
                         new
                         {
-                            Id = new Guid("a62906f1-b711-4b62-828d-6ed2fdb23724"),
+                            Id = new Guid("b50410bc-b5a7-4cf4-a8ea-0e94d96edad4"),
                             ImagePaths = "[]",
                             Name = "Five star hotel",
                             NoOfRooms = 70,
-                            RentPerDay = 0
+                            RentPerDay = 4000
                         });
                 });
 
@@ -153,6 +153,19 @@ namespace HotelReservationSystemBackend.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("e2067bca-292c-4eab-a9de-a4fdeb1f9bc0"),
+                            Age = 26,
+                            Cnic = "33293-5749302-1",
+                            Email = "aslamazhar@gmail.com",
+                            Gender = 0,
+                            Name = "Aslam Azhar",
+                            Password = "aslam1234",
+                            Role = 0
+                        });
                 });
 #pragma warning restore 612, 618
         }
