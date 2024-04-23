@@ -1,7 +1,9 @@
 ﻿using HotelReservationSystemBackend.Business.BookingRequestManager;
 using HotelReservationSystemBackend.Model;
+using HotelReservationSystemBackend.Web.Utility;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.Tokens;
 
 namespace HotelReservationSystemBackend.Web.Controllers
@@ -11,9 +13,14 @@ namespace HotelReservationSystemBackend.Web.Controllers
     public class BookingRequestController : ControllerBase
     {
         private readonly IBookingRequestManager _bookingRequestManager;
-        public BookingRequestController(IBookingRequestManager bookingRequestManager)
+        //private readonly Notifier _notifier;
+        private readonly IHubContext<Notifier> _hubContext;
+        public BookingRequestController(IBookingRequestManager bookingRequestManager,
+            IHubContext<Notifier> hubContext
+            )
         {
             _bookingRequestManager = bookingRequestManager;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -22,6 +29,13 @@ namespace HotelReservationSystemBackend.Web.Controllers
             List<BookingRequest> bookingRequests = await _bookingRequestManager.GetAsync();
             return bookingRequests;
         }
+
+        //[HttpGet("allocations")]
+        //public async Task<List<BookingRequest>> GetWithAllocations()
+        //{
+        //    List<BookingRequest> bookingRequests = await _bookingRequestManager.GetAsync();
+        //    return bookingRequests;
+        //}
 
         [HttpGet("{id}")]
         public async Task<BookingRequest?> Get(Guid id)
@@ -56,20 +70,37 @@ namespace HotelReservationSystemBackend.Web.Controllers
             return rowsAffected;
         }
 
-        [HttpPut]
-        public async Task<int> Put(BookingRequestDTO updatedBookingRequestDTO)
+        [HttpPost("allocate/{bookingId}/{roomNo}")]
+        public async Task<int> AllocateRoom(Guid bookingId, int roomNo)
         {
-            if (updatedBookingRequestDTO.Id.IsNullOrEmpty()) return 0;
+            int rowsAffected = await _bookingRequestManager.AllocateRoom(bookingId, roomNo);
+
+            if (rowsAffected > 0)
+            {
+                await _hubContext.Clients.All.SendAsync("status", BookingStatus.Approved);
+            }
+            return rowsAffected;
+        }
+
+        [HttpPut("{id}")]
+        public async Task<int> Put(Guid id, BookingStatus status)
+        {
+            if (id == Guid.Empty) return 0;
             BookingRequest updatedBookingRequest = new BookingRequest
             {
-                CheckInDate = updatedBookingRequestDTO.CheckInDate,
-                CheckOutDate = updatedBookingRequestDTO.CheckOutDate,
-                TotalRent = updatedBookingRequestDTO.TotalRent,
-                BookingStatus = updatedBookingRequestDTO.BookingStatus,
-                HotelId = updatedBookingRequestDTO.HotelId,
-                UserId = updatedBookingRequestDTO.UserId
+                Id = id,
+                //CheckInDate = updatedBookingRequestDTO.CheckInDate,
+                //CheckOutDate = updatedBookingRequestDTO.CheckOutDate,
+                //TotalRent = updatedBookingRequestDTO.TotalRent,
+                BookingStatus = status,
+                //HotelId = updatedBookingRequestDTO.HotelId,
+                //UserId = updatedBookingRequestDTO.UserId
             };
             int rowsAffected = await _bookingRequestManager.AddOrUpdateAsync(updatedBookingRequest);
+            if(rowsAffected > 0)
+            {
+                await _hubContext.Clients.All.SendAsync("status", status);
+            }
             return rowsAffected;
         }
 

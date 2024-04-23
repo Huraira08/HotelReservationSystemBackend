@@ -26,6 +26,15 @@ namespace HotelReservationSystemBackend.Data.Repositories.AllocationRepository
         {
             return await _context.Allocations.FindAsync(id);
         }
+        public async Task<List<int>> GetRoomsFromBookings(List<Guid> ids)
+        {
+            List<int> rooms = await _context.Allocations
+                .Where(a => ids.Contains(a.BookingRequestId))
+                .Select(a => a.RoomNo)
+                //.Distinct()
+                .ToListAsync();
+            return rooms;
+        }
 
         public async Task<int> AddAsync(Allocation newAllocation)
         {

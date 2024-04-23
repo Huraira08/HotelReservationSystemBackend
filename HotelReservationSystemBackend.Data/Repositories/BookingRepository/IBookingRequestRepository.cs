@@ -14,5 +14,7 @@ namespace HotelReservationSystemBackend.Data.Repositories.BookingRepository
         public Task<List<BookingRequest>> GetAsync();
         public Task<int> AddOrUpdateAsync(BookingRequest newBookingRequest);
         public Task<int> DeleteAsync(Guid id);
+
+        public Task<List<Guid>> GetAccpetedRequestsWithDateRange(Guid hotelId, DateTime startDate, DateTime endDate);
     }
 }

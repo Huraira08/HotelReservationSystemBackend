@@ -6,6 +6,7 @@ using HotelReservationSystemBackend.Data.Repositories.AllocationRepository;
 using HotelReservationSystemBackend.Data.Repositories.BookingRepository;
 using HotelReservationSystemBackend.Data.Repositories.HotelRepository;
 using HotelReservationSystemBackend.Data.Repositories.UserRepository;
+using HotelReservationSystemBackend.Web.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -46,6 +47,9 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddCors();
+builder.Services.AddSignalR().AddJsonProtocol(options => {
+    options.PayloadSerializerOptions.PropertyNamingPolicy = null;
+});
 
 // repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -71,9 +75,16 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 app.UseCors(options =>
-options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
-    );
+//options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
+//    );
 
+ app.UseCors(x => x
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           .SetIsOriginAllowed(origin => true)
+           .AllowCredentials()));
+app.MapHub<Notifier>("/notifier");
 app.MapControllers();
+
 
 app.Run();

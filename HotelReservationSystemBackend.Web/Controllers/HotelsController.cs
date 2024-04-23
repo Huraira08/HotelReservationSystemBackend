@@ -30,11 +30,25 @@ namespace HotelReservationSystemBackend.Web.Controllers
             return hotel;
         }
 
+        [HttpGet("freeRooms/{hotelId}/{bookingId}")]
+        public async Task<List<int>> GetFreeRooms(Guid hotelId, Guid bookingId)
+        {
+            if (hotelId == Guid.Empty || bookingId == Guid.Empty) return [];
+            List<int> freeRooms = await _hotelsManager.GetFreeRooms(hotelId, bookingId);
+            return freeRooms;
+        }
+
 
         [HttpPost]
-        public async Task<int> Post([FromBody] Hotel newHotel)
+        public async Task<int> Post([FromBody] HotelDTO newHotelDTO)
         {
-            if(newHotel.Id != Guid.Empty)
+            Hotel newHotel = new Hotel { 
+                Name = newHotelDTO.Name,
+                NoOfRooms = newHotelDTO.NoOfRooms,
+                RentPerDay = newHotelDTO.RentPerDay,
+                ImagePaths = newHotelDTO.ImagePaths
+            };
+            if (!newHotelDTO.Id.IsNullOrEmpty())
             {
                 return 0;
             }
@@ -42,16 +56,24 @@ namespace HotelReservationSystemBackend.Web.Controllers
             return rowsAffected;
         }
 
-        [HttpPut]
-        public async Task<int> Put([FromBody] Hotel updatedHotel)
-        {
-            if(updatedHotel.Id == Guid.Empty)
-            {
-                return 0;
-            }
-            int rowsAffected = await _hotelsManager.AddOrUpdateAsync(updatedHotel);
-            return rowsAffected;
-        }
+        //[HttpPut]
+        //public async Task<int> Put([FromBody] HotelDTO updatedHotelDTO)
+        //{
+        //    Hotel updatedHotel = new Hotel
+        //    {
+        //        Name = updatedHotelDTO.Name,
+        //        NoOfRooms = updatedHotelDTO.NoOfRooms,
+        //        RentPerDay = updatedHotelDTO.RentPerDay,
+        //        ImagePaths = updatedHotelDTO.ImagePaths
+        //    };
+        //    if (updatedHotelDTO.Id.IsNullOrEmpty())
+        //    {
+        //        return 0;
+        //    }
+        //    updatedHotel.Id = Guid();
+        //    int rowsAffected = await _hotelsManager.AddOrUpdateAsync(updatedHotel);
+        //    return rowsAffected;
+        //}
 
         [HttpDelete]
         public async Task<int> Delete(Guid id)

@@ -9,7 +9,7 @@ namespace HotelReservationSystemBackend.Model
 {
     public class Hotel
     {
-        [JsonIgnore]
+        //[JsonIgnore]
         public Guid Id { get; set; }
         public string Name { get; set; }
         public int NoOfRooms { get; set; }

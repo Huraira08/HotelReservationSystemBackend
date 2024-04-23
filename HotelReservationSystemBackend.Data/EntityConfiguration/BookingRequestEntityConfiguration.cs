@@ -24,7 +24,7 @@ namespace HotelReservationSystemBackend.Data.EntityConfiguration
             builder.Property(b => b.TotalRent).IsRequired();
             builder.Property(b => b.BookingStatus).IsRequired();
             builder.Property(b => b.HotelId).IsRequired();
-            builder.Ignore(b => b.Hotel);
+            //builder.Ignore(b => b.Hotel);
             builder.Property(b => b.UserId).IsRequired();
             builder.Ignore(b => b.User);
         }

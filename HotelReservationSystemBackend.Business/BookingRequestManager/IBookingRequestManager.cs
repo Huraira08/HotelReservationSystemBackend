@@ -13,6 +13,8 @@ namespace HotelReservationSystemBackend.Business.BookingRequestManager
         public Task<List<BookingRequest>> GetAsync();
         public Task<List<BookingRequest>> GetByUserId(Guid userId);
         public Task<int> AddOrUpdateAsync(BookingRequest newBookingRequest);
+        public Task<int> AllocateRoom(Guid bookingId, int roomNo);
         public Task<int> DeleteAsync(Guid id);
+        
     }
 }

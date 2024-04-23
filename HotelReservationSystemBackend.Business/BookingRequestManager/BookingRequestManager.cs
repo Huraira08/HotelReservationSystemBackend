@@ -1,4 +1,5 @@
-﻿using HotelReservationSystemBackend.Data.Repositories.BookingRepository;
+﻿using HotelReservationSystemBackend.Data.Repositories.AllocationRepository;
+using HotelReservationSystemBackend.Data.Repositories.BookingRepository;
 using HotelReservationSystemBackend.Model;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,14 @@ namespace HotelReservationSystemBackend.Business.BookingRequestManager
     public class BookingRequestManager : IBookingRequestManager
     {
         private readonly IBookingRequestRepository _bookingRequestRepository;
-        public BookingRequestManager(IBookingRequestRepository bookingRequestRepository)
+        private readonly IAllocationRepository _allocationRepository;
+        public BookingRequestManager(
+            IBookingRequestRepository bookingRequestRepository,
+            IAllocationRepository allocationRepository
+            )
         {
             _bookingRequestRepository = bookingRequestRepository;
+            _allocationRepository = allocationRepository;
         }
         public async Task<List<BookingRequest>> GetAsync()
         {
@@ -37,6 +43,28 @@ namespace HotelReservationSystemBackend.Business.BookingRequestManager
         {
             int rowsAffected = await _bookingRequestRepository.AddOrUpdateAsync(newBookingRequest);
             return rowsAffected;
+        }
+
+        public async Task<int> AllocateRoom(Guid bookingId, int roomNo)
+        {
+            Allocation allocation = new Allocation { 
+                BookingRequestId = bookingId,
+                RoomNo = roomNo 
+            };
+            int rowsAffected = await _allocationRepository.AddAsync(allocation);
+            if(rowsAffected > 0)
+            {
+                BookingRequest bookingRequest = new BookingRequest {
+                    Id = bookingId,
+                    BookingStatus = BookingStatus.Approved
+                };
+                rowsAffected = await _bookingRequestRepository.AddOrUpdateAsync(bookingRequest);
+                return rowsAffected;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public async Task<int> DeleteAsync(Guid id)

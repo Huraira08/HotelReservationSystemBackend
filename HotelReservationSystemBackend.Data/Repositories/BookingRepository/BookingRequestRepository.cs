@@ -18,16 +18,36 @@ namespace HotelReservationSystemBackend.Data.Repositories.BookingRepository
         }
         public async Task<List<BookingRequest>> GetAsync()
         {
-            return await _context.BookingRequests.ToListAsync();
+            return await _context.BookingRequests.Include(r=>r.Hotel).ToListAsync();
         }
         public async Task<BookingRequest?> GetAsync(Guid id)
         {
-            return await _context.BookingRequests.FindAsync(id);
+            BookingRequest? request = await _context.BookingRequests
+                .Include(r => r.Hotel)
+                .FirstOrDefaultAsync(r => r.Id == id);
+            return request;
         }
         public async Task<List<BookingRequest>> GetByUserId(Guid userId)
         {
-            List<BookingRequest> requests = await _context.BookingRequests.Where(r => r.UserId == userId).ToListAsync();
+            List<BookingRequest> requests = await _context.BookingRequests
+                .Where(r => r.UserId == userId)
+                .Include(b => b.Hotel)
+                .ToListAsync();
             return requests;
+        }
+        public async Task<List<Guid>> GetAccpetedRequestsWithDateRange(Guid hotelId, DateTime checkIn, DateTime checkOut)
+        {
+            List<Guid> approvedRequestIds = await _context.BookingRequests
+                .Where(r => r.HotelId == hotelId)
+                .Where(r =>
+                (r.CheckInDate.Date >= checkIn.Date
+                && r.CheckInDate.Date <= checkOut.Date)
+                || (r.CheckOutDate.Date >= checkIn.Date
+                && r.CheckOutDate.Date <= checkOut.Date))
+                .Where(r => r.BookingStatus == BookingStatus.Approved)
+                .Select(r => r.Id)
+                .ToListAsync();
+            return approvedRequestIds;
         }
         public async Task<int> AddOrUpdateAsync(BookingRequest newBookingRequest)
         {
@@ -43,7 +63,7 @@ namespace HotelReservationSystemBackend.Data.Repositories.BookingRepository
 
                 oldBookingRequest.BookingStatus = newBookingRequest.BookingStatus;
 
-                _context.Entry(newBookingRequest).State = EntityState.Modified;
+                //_context.Entry(newBookingRequest).State = EntityState.Modified;
             }
 
             return await _context.SaveChangesAsync();
