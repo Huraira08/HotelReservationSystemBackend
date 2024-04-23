@@ -30,6 +30,13 @@ namespace HotelReservationSystemBackend.Web.Controllers
             return bookingRequest;
         }
 
+        [HttpGet("UserRequests/{userId}")]
+        public async Task<List<BookingRequest>> GetByUserId(Guid userId)
+        {
+            List<BookingRequest> bookingRequests = await _bookingRequestManager.GetByUserId(userId);
+            return bookingRequests;
+        }
+
 
         [HttpPost]
         public async Task<int> Post(BookingRequestDTO newBookingRequestDTO)

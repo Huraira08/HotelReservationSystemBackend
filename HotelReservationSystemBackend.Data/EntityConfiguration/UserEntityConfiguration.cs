@@ -30,10 +30,23 @@ namespace HotelReservationSystemBackend.Data.EntityConfiguration
                     Name = "Aslam Azhar",
                     Email = "aslamazhar@gmail.com",
                     Password = "aslam1234",
-                    Age=26,
+                    Age = 26,
                     Gender = Gender.Male,
                     Cnic = "33293-5749302-1",
                     Role = Role.Customer
+                }
+                );
+            builder.HasData(
+                new User
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Admin",
+                    Email = "admin@gmail.com",
+                    Password = "Admin123",
+                    Age = 30,
+                    Gender = Gender.Male,
+                    Cnic = "33889-170293-3",
+                    Role = Role.Admin
                 }
                 );
         }

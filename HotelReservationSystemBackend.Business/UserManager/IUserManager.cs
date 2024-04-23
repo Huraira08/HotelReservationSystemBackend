@@ -13,5 +13,6 @@ namespace HotelReservationSystemBackend.Business.UserManager
         public Task<List<User>> GetAsync();
         public Task<User?> AddOrUpdateAsync(User newUser);
         public Task<int> DeleteAsync(Guid id);
+        public Task<User?> Login(string email, string password);
     }
 }

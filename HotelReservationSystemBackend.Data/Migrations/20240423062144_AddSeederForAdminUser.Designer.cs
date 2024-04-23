@@ -4,6 +4,7 @@ using HotelReservationSystemBackend.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelReservationSystemBackend.Data.Migrations
 {
     [DbContext(typeof(HotelReservationContext))]
-    partial class HotelReservationContextModelSnapshot : ModelSnapshot
+    [Migration("20240423062144_AddSeederForAdminUser")]
+    partial class AddSeederForAdminUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

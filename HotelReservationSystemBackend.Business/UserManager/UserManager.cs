@@ -37,14 +37,14 @@ namespace HotelReservationSystemBackend.Business.UserManager
             return rowsAffected;
         }
 
-        public async Task<bool> UserExists(string email, string password)
+        public async Task<User?> Login(string email, string password)
         {
             User? user = await _userRepository.GetByEmailAsync(email);
             if(user == null || user.Password != password)
             {
-                return false;
+                return null;
             }
-            return true;
+            return user;
         }
     }
 }

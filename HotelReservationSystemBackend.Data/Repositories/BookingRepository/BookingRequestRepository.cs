@@ -24,6 +24,11 @@ namespace HotelReservationSystemBackend.Data.Repositories.BookingRepository
         {
             return await _context.BookingRequests.FindAsync(id);
         }
+        public async Task<List<BookingRequest>> GetByUserId(Guid userId)
+        {
+            List<BookingRequest> requests = await _context.BookingRequests.Where(r => r.UserId == userId).ToListAsync();
+            return requests;
+        }
         public async Task<int> AddOrUpdateAsync(BookingRequest newBookingRequest)
         {
             if (newBookingRequest.Id == Guid.Empty)

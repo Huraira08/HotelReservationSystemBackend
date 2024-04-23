@@ -21,6 +21,12 @@ namespace HotelReservationSystemBackend.Business.BookingRequestManager
             return bookingRequests;
         }
 
+        public async Task<List<BookingRequest>> GetByUserId(Guid userId)
+        {
+            List<BookingRequest> bookingRequests = await _bookingRequestRepository.GetByUserId(userId);
+            return bookingRequests;
+        }
+
         public async Task<BookingRequest?> GetAsync(Guid id)
         {
             BookingRequest? bookingRequest = await _bookingRequestRepository.GetAsync(id);

@@ -28,6 +28,9 @@ namespace HotelReservationSystemBackend.Data.Repositories.UserRepository
         }
         public async Task<User?> AddOrUpdateAsync(User newUser)
         {
+            // User can neither register as Admin nor update the role to Admin
+            if (newUser.Role == Role.Admin) return null;
+
             if (newUser.Id == Guid.Empty)
             {
                 _context.Users.Add(newUser);

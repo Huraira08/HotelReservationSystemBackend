@@ -32,19 +32,13 @@ namespace HotelReservationSystemBackend.Web.Controllers
 
 
         [HttpPost]
-        public async Task<int> Post([FromBody] HotelDTO newHotel)
+        public async Task<int> Post([FromBody] Hotel newHotel)
         {
-            if(!newHotel.Id.IsNullOrEmpty())
+            if(newHotel.Id != Guid.Empty)
             {
                 return 0;
             }
-            Hotel hotel = new Hotel {
-                Name = newHotel.Name,
-                NoOfRooms = newHotel.NoOfRooms,
-                RentPerDay = newHotel.RentPerDay,
-                ImagePaths = newHotel.ImagePaths
-            };
-            int rowsAffected = await _hotelsManager.AddOrUpdateAsync(hotel);
+            int rowsAffected = await _hotelsManager.AddOrUpdateAsync(newHotel);
             return rowsAffected;
         }
 
@@ -55,14 +49,7 @@ namespace HotelReservationSystemBackend.Web.Controllers
             {
                 return 0;
             }
-            Hotel hotel = new Hotel
-            {
-                Name = updatedHotel.Name,
-                NoOfRooms = updatedHotel.NoOfRooms,
-                RentPerDay = updatedHotel.RentPerDay,
-                ImagePaths = updatedHotel.ImagePaths
-            };
-            int rowsAffected = await _hotelsManager.AddOrUpdateAsync(hotel);
+            int rowsAffected = await _hotelsManager.AddOrUpdateAsync(updatedHotel);
             return rowsAffected;
         }
 
