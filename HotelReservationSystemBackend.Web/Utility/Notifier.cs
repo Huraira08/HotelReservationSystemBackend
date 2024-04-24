@@ -5,9 +5,9 @@ namespace HotelReservationSystemBackend.Web.Utility
 {
     public class Notifier : Hub
     {
-        public async Task SendMessage(BookingStatus status)
+        public async Task SendMessage(BookingRequest request)
         {
-            await Clients.All.SendAsync("status", status);
+            await Clients.All.SendAsync("status", request);
         }
     }
 }

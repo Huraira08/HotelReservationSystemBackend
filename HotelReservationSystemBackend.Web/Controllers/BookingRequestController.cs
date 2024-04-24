@@ -86,7 +86,12 @@ namespace HotelReservationSystemBackend.Web.Controllers
 
             if (rowsAffected > 0)
             {
-                await _hubContext.Clients.All.SendAsync("status", BookingStatus.Approved);
+                BookingRequest bookingRequest = new BookingRequest
+                {
+                    Id = bookingId,
+                    BookingStatus = BookingStatus.Approved
+                };
+                await _hubContext.Clients.All.SendAsync("status", bookingRequest);
             }
             return rowsAffected;
         }
@@ -108,7 +113,7 @@ namespace HotelReservationSystemBackend.Web.Controllers
             int rowsAffected = await _bookingRequestManager.AddOrUpdateAsync(updatedBookingRequest);
             if(rowsAffected > 0)
             {
-                await _hubContext.Clients.All.SendAsync("status", status);
+                await _hubContext.Clients.All.SendAsync("status", updatedBookingRequest);
             }
             return rowsAffected;
         }
