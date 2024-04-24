@@ -1,6 +1,7 @@
 ﻿using HotelReservationSystemBackend.Business.BookingRequestManager;
 using HotelReservationSystemBackend.Model;
 using HotelReservationSystemBackend.Web.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -8,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace HotelReservationSystemBackend.Web.Controllers
 {
+    [Authorize(Policy= "AdminOrCustomer")]
     [Route("api/[controller]")]
     [ApiController]
     public class BookingRequestController : ControllerBase
@@ -51,6 +53,13 @@ namespace HotelReservationSystemBackend.Web.Controllers
             return bookingRequests;
         }
 
+        [HttpGet("RequestAllocation")]
+        public async Task<List<RequestAllocationDTO>> GetRequestAndAllocation()
+        {
+            List<RequestAllocationDTO> requestAllocations = await _bookingRequestManager.GetRequestAndAllocation();
+            return requestAllocations;
+        }
+
 
         [HttpPost]
         public async Task<int> Post(BookingRequestDTO newBookingRequestDTO)
@@ -82,13 +91,13 @@ namespace HotelReservationSystemBackend.Web.Controllers
             return rowsAffected;
         }
 
-        [HttpPut("{id}")]
-        public async Task<int> Put(Guid id, BookingStatus status)
+        [HttpPut("{bookingId}/{status}")]
+        public async Task<int> Put(Guid bookingId, BookingStatus status)
         {
-            if (id == Guid.Empty) return 0;
+            if (bookingId == Guid.Empty) return 0;
             BookingRequest updatedBookingRequest = new BookingRequest
             {
-                Id = id,
+                Id = bookingId,
                 //CheckInDate = updatedBookingRequestDTO.CheckInDate,
                 //CheckOutDate = updatedBookingRequestDTO.CheckOutDate,
                 //TotalRent = updatedBookingRequestDTO.TotalRent,

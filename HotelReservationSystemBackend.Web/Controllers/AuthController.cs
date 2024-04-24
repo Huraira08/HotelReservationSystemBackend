@@ -51,10 +51,11 @@ namespace HotelReservationSystemBackend.Web.Controllers
             var authClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Name),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
-            authClaims.Add(new Claim(ClaimTypes.Role, user.Role.ToString()));
+            //authClaims.Add();
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]!));
             var token = new JwtSecurityToken(
                         issuer: _configuration["JWT:ValidIssuer"],

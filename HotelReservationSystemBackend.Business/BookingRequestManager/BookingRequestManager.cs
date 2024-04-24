@@ -39,6 +39,23 @@ namespace HotelReservationSystemBackend.Business.BookingRequestManager
             return bookingRequest;
         }
 
+        public async Task<List<RequestAllocationDTO>> GetRequestAndAllocation()
+        {
+            List<BookingRequest> bookingRequests = await _bookingRequestRepository.GetAsync();
+            List<Allocation> allocations = await _allocationRepository.GetAsync();
+            List<RequestAllocationDTO> requestAllocationDTOs = [];
+            foreach (BookingRequest bookingRequest in bookingRequests)
+            {
+                Allocation? allocation = allocations.Find(a=>a.BookingRequestId == bookingRequest.Id);
+                RequestAllocationDTO allocationDTO = new RequestAllocationDTO {
+                    BookingRequest = bookingRequest,
+                    Allocation = allocation
+                };
+                requestAllocationDTOs.Add(allocationDTO);
+            }
+            return requestAllocationDTOs;
+        }
+
         public async Task<int> AddOrUpdateAsync(BookingRequest newBookingRequest)
         {
             int rowsAffected = await _bookingRequestRepository.AddOrUpdateAsync(newBookingRequest);

@@ -46,6 +46,13 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole(Role.Admin.ToString()));
+    options.AddPolicy("CustomerOnly", policy => policy.RequireRole(Role.Customer.ToString()));
+    options.AddPolicy("AdminOrCustomer", policy => policy.RequireRole(Role.Admin.ToString(), Role.Customer.ToString()));
+});
+
 builder.Services.AddCors();
 builder.Services.AddSignalR().AddJsonProtocol(options => {
     options.PayloadSerializerOptions.PropertyNamingPolicy = null;
