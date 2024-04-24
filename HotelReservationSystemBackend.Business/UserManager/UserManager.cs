@@ -27,6 +27,8 @@ namespace HotelReservationSystemBackend.Business.UserManager
         }
         public async Task<User?> AddOrUpdateAsync(User newUser)
         {
+            User? existingUser = await _userRepository.GetByEmailAsync(newUser.Email);
+            if (existingUser != null) return null;
             User? user = await _userRepository.AddOrUpdateAsync(newUser);
             return user;
         }

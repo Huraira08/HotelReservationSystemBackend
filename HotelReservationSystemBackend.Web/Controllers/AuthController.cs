@@ -35,9 +35,9 @@ namespace HotelReservationSystemBackend.Web.Controllers
                 Role = userDTO.Role
             };
             User? newUser = await _userManager.AddOrUpdateAsync(user);
-            if (user == null)
+            if (newUser == null)
             {
-                return BadRequest();
+                return BadRequest("Could not register user");
             }
             return Ok(new { Status = "Succeeded", Message = "User created successfully", User = user });
         }
