@@ -21,7 +21,8 @@ namespace HotelReservationSystemBackend.Data.EntityConfiguration
 
             builder.HasData(
                 new Hotel { Id = Guid.NewGuid(), Name = "Royal hotel", NoOfRooms = 50, RentPerDay = 5000, ImagePaths = [] },
-                new Hotel { Id = Guid.NewGuid(), Name = "Five star hotel", NoOfRooms = 70, RentPerDay = 4000, ImagePaths = [] }
+                new Hotel { Id = Guid.NewGuid(), Name = "Five star hotel", NoOfRooms = 70, RentPerDay = 4000, ImagePaths = [] },
+                new Hotel { Id = Guid.NewGuid(), Name = "Luxury Hotel", NoOfRooms = 40, RentPerDay = 7000, ImagePaths = [] }
                 );
         }
     }
