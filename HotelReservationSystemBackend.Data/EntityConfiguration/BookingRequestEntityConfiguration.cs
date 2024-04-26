@@ -24,9 +24,15 @@ namespace HotelReservationSystemBackend.Data.EntityConfiguration
             builder.Property(b => b.TotalRent).IsRequired();
             builder.Property(b => b.BookingStatus).IsRequired();
             builder.Property(b => b.HotelId).IsRequired();
-            //builder.Ignore(b => b.Hotel);
             builder.Property(b => b.UserId).IsRequired();
-            builder.Ignore(b => b.User);
+            builder.HasOne(b => b.Hotel)
+                .WithMany().
+                HasForeignKey(b => b.HotelId);
+
+            builder
+                .HasOne(b => b.User)
+                .WithMany(u => u.BookingRequests)
+                .HasForeignKey(b => b.UserId);
         }
     }
 }

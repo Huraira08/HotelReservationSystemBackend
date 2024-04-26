@@ -22,7 +22,6 @@ namespace HotelReservationSystemBackend.Data.EntityConfiguration
             builder.Property(u => u.Gender).IsRequired();
             builder.Property(u => u.Cnic).HasMaxLength(15).IsRequired();
             builder.Property(u => u.Role).IsRequired();
-            builder.Ignore(u => u.BookingRequests);
 
             builder.HasData(
                 new User { 

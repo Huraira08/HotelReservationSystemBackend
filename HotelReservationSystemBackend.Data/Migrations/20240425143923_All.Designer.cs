@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelReservationSystemBackend.Data.Migrations
 {
     [DbContext(typeof(HotelReservationContext))]
-    [Migration("20240423062144_AddSeederForAdminUser")]
-    partial class AddSeederForAdminUser
+    [Migration("20240425143923_All")]
+    partial class All
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,6 +68,10 @@ namespace HotelReservationSystemBackend.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("HotelId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("BookingRequest", (string)null);
                 });
 
@@ -99,7 +103,7 @@ namespace HotelReservationSystemBackend.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4f29f30d-79da-4058-aa33-84bb1d9de6a4"),
+                            Id = new Guid("b3b61a54-162c-4e76-b229-ae6931dc500d"),
                             ImagePaths = "[]",
                             Name = "Royal hotel",
                             NoOfRooms = 50,
@@ -107,11 +111,19 @@ namespace HotelReservationSystemBackend.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f07a50ba-f3f0-41e1-92cd-748174d33f76"),
+                            Id = new Guid("36d578ed-d5e4-4d4f-b30f-3adf2005bcde"),
                             ImagePaths = "[]",
                             Name = "Five star hotel",
                             NoOfRooms = 70,
                             RentPerDay = 4000
+                        },
+                        new
+                        {
+                            Id = new Guid("ef7f6a24-ce30-458c-9294-fe3056a6ab05"),
+                            ImagePaths = "[]",
+                            Name = "Luxury Hotel",
+                            NoOfRooms = 40,
+                            RentPerDay = 7000
                         });
                 });
 
@@ -157,7 +169,7 @@ namespace HotelReservationSystemBackend.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("beba5d2b-ae7e-403d-8c00-f918489c2bcc"),
+                            Id = new Guid("3adc6ffb-7ca3-41bf-9954-9ce0b2f24bf3"),
                             Age = 26,
                             Cnic = "33293-5749302-1",
                             Email = "aslamazhar@gmail.com",
@@ -168,7 +180,7 @@ namespace HotelReservationSystemBackend.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4660b767-a47a-49e3-8952-365275188cd9"),
+                            Id = new Guid("ee52e3a3-f664-41cd-979a-9cdf8beeb03c"),
                             Age = 30,
                             Cnic = "33889-170293-3",
                             Email = "admin@gmail.com",
@@ -177,6 +189,30 @@ namespace HotelReservationSystemBackend.Data.Migrations
                             Password = "Admin123",
                             Role = 1
                         });
+                });
+
+            modelBuilder.Entity("HotelReservationSystemBackend.Model.BookingRequest", b =>
+                {
+                    b.HasOne("HotelReservationSystemBackend.Model.Hotel", "Hotel")
+                        .WithMany()
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HotelReservationSystemBackend.Model.User", "User")
+                        .WithMany("BookingRequests")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HotelReservationSystemBackend.Model.User", b =>
+                {
+                    b.Navigation("BookingRequests");
                 });
 #pragma warning restore 612, 618
         }

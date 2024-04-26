@@ -43,7 +43,7 @@ namespace HotelReservationSystemBackend.Data.Repositories.HotelRepository
                 oldHotel.RentPerDay = newHotel.RentPerDay;
                 oldHotel.ImagePaths = newHotel.ImagePaths;
 
-                _context.Entry(newHotel).State = EntityState.Modified;
+                //_context.Entry(newHotel).State = EntityState.Modified;
             }
             int rowAffected = await _context.SaveChangesAsync();
             return rowAffected;

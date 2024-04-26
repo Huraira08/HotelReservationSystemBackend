@@ -67,6 +67,8 @@ namespace HotelReservationSystemBackend.Data.Migrations
 
                     b.HasIndex("HotelId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("BookingRequest", (string)null);
                 });
 
@@ -98,7 +100,7 @@ namespace HotelReservationSystemBackend.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9ace5662-77f8-46b1-926e-620f27e50e18"),
+                            Id = new Guid("b3b61a54-162c-4e76-b229-ae6931dc500d"),
                             ImagePaths = "[]",
                             Name = "Royal hotel",
                             NoOfRooms = 50,
@@ -106,7 +108,7 @@ namespace HotelReservationSystemBackend.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1b8792a1-6422-4219-8764-11ecd9c2bcce"),
+                            Id = new Guid("36d578ed-d5e4-4d4f-b30f-3adf2005bcde"),
                             ImagePaths = "[]",
                             Name = "Five star hotel",
                             NoOfRooms = 70,
@@ -114,7 +116,7 @@ namespace HotelReservationSystemBackend.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("37bd6bbb-0c61-4df6-af41-edf680d97c33"),
+                            Id = new Guid("ef7f6a24-ce30-458c-9294-fe3056a6ab05"),
                             ImagePaths = "[]",
                             Name = "Luxury Hotel",
                             NoOfRooms = 40,
@@ -164,7 +166,7 @@ namespace HotelReservationSystemBackend.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9c762653-f6c5-406b-a722-0efd6f47baba"),
+                            Id = new Guid("3adc6ffb-7ca3-41bf-9954-9ce0b2f24bf3"),
                             Age = 26,
                             Cnic = "33293-5749302-1",
                             Email = "aslamazhar@gmail.com",
@@ -175,7 +177,7 @@ namespace HotelReservationSystemBackend.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e13fd475-8d10-4168-b4fd-5f82acafccf3"),
+                            Id = new Guid("ee52e3a3-f664-41cd-979a-9cdf8beeb03c"),
                             Age = 30,
                             Cnic = "33889-170293-3",
                             Email = "admin@gmail.com",
@@ -194,7 +196,20 @@ namespace HotelReservationSystemBackend.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HotelReservationSystemBackend.Model.User", "User")
+                        .WithMany("BookingRequests")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Hotel");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HotelReservationSystemBackend.Model.User", b =>
+                {
+                    b.Navigation("BookingRequests");
                 });
 #pragma warning restore 612, 618
         }

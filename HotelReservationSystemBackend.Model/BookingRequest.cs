@@ -9,7 +9,6 @@ namespace HotelReservationSystemBackend.Model
 {
     public class BookingRequest
     {
-        //[JsonIgnore]
         public Guid Id { get; set; }
         public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
@@ -18,9 +17,9 @@ namespace HotelReservationSystemBackend.Model
 
         public Guid HotelId { get; set; }
 
-        public Hotel Hotel { get; set; }
+        public Hotel? Hotel { get; set; }
         public Guid UserId { get; set; }
 
-        public User User { get; set; }
+        public User? User { get; set; }
     }
 }

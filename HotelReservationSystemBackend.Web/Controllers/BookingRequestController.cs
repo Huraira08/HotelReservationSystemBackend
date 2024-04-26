@@ -32,13 +32,6 @@ namespace HotelReservationSystemBackend.Web.Controllers
             return bookingRequests;
         }
 
-        //[HttpGet("allocations")]
-        //public async Task<List<BookingRequest>> GetWithAllocations()
-        //{
-        //    List<BookingRequest> bookingRequests = await _bookingRequestManager.GetAsync();
-        //    return bookingRequests;
-        //}
-
         [HttpGet("{id}")]
         public async Task<BookingRequest?> Get(Guid id)
         {
@@ -62,18 +55,9 @@ namespace HotelReservationSystemBackend.Web.Controllers
 
 
         [HttpPost]
-        public async Task<int> Post(BookingRequestDTO newBookingRequestDTO)
+        public async Task<int> Post(BookingRequest newBookingRequest)
         {
-            if (!newBookingRequestDTO.Id.IsNullOrEmpty()) return 0;
-            BookingRequest newBookingRequest = new BookingRequest
-            {
-                CheckInDate = newBookingRequestDTO.CheckInDate,
-                CheckOutDate = newBookingRequestDTO.CheckOutDate,
-                TotalRent = newBookingRequestDTO.TotalRent,
-                BookingStatus = newBookingRequestDTO.BookingStatus,
-                HotelId = newBookingRequestDTO.HotelId,
-                UserId = newBookingRequestDTO.UserId
-            };
+            if (newBookingRequest.Id != Guid.Empty) return 0;
 
             int rowsAffected = await _bookingRequestManager.AddOrUpdateAsync(newBookingRequest);
             return rowsAffected;
@@ -96,19 +80,14 @@ namespace HotelReservationSystemBackend.Web.Controllers
             return rowsAffected;
         }
 
-        [HttpPut("{bookingId}/{status}")]
-        public async Task<int> Put(Guid bookingId, BookingStatus status)
+        [HttpPut("reject/{bookingId}")]
+        public async Task<int> Reject(Guid bookingId)
         {
             if (bookingId == Guid.Empty) return 0;
             BookingRequest updatedBookingRequest = new BookingRequest
             {
                 Id = bookingId,
-                //CheckInDate = updatedBookingRequestDTO.CheckInDate,
-                //CheckOutDate = updatedBookingRequestDTO.CheckOutDate,
-                //TotalRent = updatedBookingRequestDTO.TotalRent,
-                BookingStatus = status,
-                //HotelId = updatedBookingRequestDTO.HotelId,
-                //UserId = updatedBookingRequestDTO.UserId
+                BookingStatus = BookingStatus.Rejected,
             };
             int rowsAffected = await _bookingRequestManager.AddOrUpdateAsync(updatedBookingRequest);
             if(rowsAffected > 0)
