@@ -1,6 +1,5 @@
 ﻿using HotelReservationSystemBackend.Business.UserManager;
 using HotelReservationSystemBackend.Model;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -22,18 +21,8 @@ namespace HotelReservationSystemBackend.Web.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] UserDTO userDTO)
+        public async Task<IActionResult> Register([FromBody] User user)
         {
-            User user = new User
-            {
-                Name = userDTO.Name,
-                Email = userDTO.Email,
-                Password = userDTO.Password,
-                Age = userDTO.Age,
-                Gender = userDTO.Gender,
-                Cnic = userDTO.Cnic,
-                Role = userDTO.Role
-            };
             User? newUser = await _userManager.AddOrUpdateAsync(user);
             if (newUser == null)
             {
@@ -55,7 +44,6 @@ namespace HotelReservationSystemBackend.Web.Controllers
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
-            //authClaims.Add();
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]!));
             var token = new JwtSecurityToken(
                         issuer: _configuration["JWT:ValidIssuer"],
@@ -77,7 +65,6 @@ namespace HotelReservationSystemBackend.Web.Controllers
                     Role = user.Role
                 }
             });
-            //return Ok(user);
         }
     }
 }
